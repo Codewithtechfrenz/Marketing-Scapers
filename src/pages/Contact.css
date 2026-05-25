@@ -1,0 +1,340 @@
+/* ================= GLOBAL ================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Outfit", sans-serif;
+}
+
+/* ================= SECTION BACKGROUND ================= */
+.contact-hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 60px 60px; /* top clears the fixed navbar */
+  position: relative;
+  overflow: hidden;
+
+  /* 🌿 LIGHT MILD BACKGROUND */
+  background: linear-gradient(135deg, #c9dac9, hsl(226, 100%, 97%), #91a89a);
+  color: #111827;
+}
+
+/* ================= SOFT BLUR ORBS ================= */
+.bg-blur {
+  position: absolute;
+  width: 450px;
+  height: 450px;
+  filter: blur(120px);
+  opacity: 0.4;
+  z-index: 0;
+  border-radius: 50%;
+}
+
+.bg1 {
+  background: #a5b4fc;
+  top: -120px;
+  left: -120px;
+}
+
+.bg2 {
+  background: #f9a8d4;
+  bottom: -120px;
+  right: -120px;
+}
+
+/* ================= WRAPPER ================= */
+.contact-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  width: 100%;
+  max-width: 1100px;
+  z-index: 2;
+}
+
+/* ================= LEFT SIDE ================= */
+.contact-left h1 {
+  font-size: 44px;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.contact-left h1 span {
+  color: rgb(44, 156, 44);
+}
+
+.contact-left p {
+  margin-top: 10px;
+  color: #6b7280;
+  font-size: 15px;
+}
+
+/* info cards */
+.info-cards {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.info-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 14px;
+
+  /* 🌿 light glass */
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: 0.3s ease;
+}
+
+.info-card:hover {
+  transform: translateX(6px);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.icon {
+  color: rgb(44, 156, 44);
+}
+
+/* ================= RIGHT FORM ================= */
+.contact-right {
+  display: flex;
+  justify-content: center;
+}
+
+.glass-form {
+  width: 100%;
+  max-width: 900px;   /* 🔥 increase form size here */
+  margin: 0 auto;     /* center the form */
+
+  padding: 50px;
+  border-radius: 20px;
+
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(15px);
+
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+}
+
+.glass-form h2 {
+  margin-bottom: 10px;
+  color: #111827;
+}
+
+/* inputs */
+.glass-form input,
+.glass-form textarea {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  outline: none;
+
+  background: #ffffff;
+  color: #111827;
+
+  transition: 0.3s;
+}
+
+.glass-form input:focus,
+.glass-form textarea:focus {
+  border-color: rgb(44, 156, 44);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+.glass-form textarea {
+  min-height: 120px;
+  resize: none;
+}
+
+/* row */
+.row {
+  display: flex;
+  gap: 10px;
+}
+
+/* button */
+.glass-form button {
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+
+  background: linear-gradient(135deg, #81d6af, #449b59);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: 0.3s ease;
+}
+
+.glass-form button:hover {
+  transform: scale(1.05);
+}
+
+/* ================= TOAST ================= */
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #22c55e;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 10px;
+  animation: slideIn 0.4s ease;
+  z-index: 999;
+  font-weight: 500;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 900px) {
+  .contact-hero {
+    padding: 100px 18px 40px; /* top clears mobile topbar (60px) + breathing room */
+  }
+
+  .contact-wrapper {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .contact-left h1 {
+    font-size: 30px;
+    text-align: center;
+  }
+
+  .contact-left p {
+    text-align: center;
+  }
+
+  .info-cards {
+    align-items: center;
+  }
+
+  .info-card {
+    width: 100%;
+  }
+
+  .contact-right {
+    width: 100%;
+  }
+
+  .glass-form {
+    padding: 24px;
+    max-width: 100%;
+    border-radius: 14px;
+  }
+
+  .row {
+    flex-direction: column;
+  }
+
+  .toast {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    text-align: center;
+  }
+}
+
+/* SUCCESS POPUP */
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease;
+}
+
+.success-popup {
+  width: 340px;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 35px;
+  border-radius: 24px;
+  text-align: center;
+  color: white;
+  animation: popupScale 0.35s ease;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+
+.popup-icon {
+  font-size: 55px;
+  margin-bottom: 15px;
+}
+
+.success-popup h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.success-popup p {
+  color: #ddd;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.success-popup button {
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  background: white;
+  color: black;
+  transition: 0.3s;
+}
+
+.success-popup button:hover {
+  transform: scale(1.05);
+}
+
+@keyframes popupScale {
+  from {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.form-error {
+  color: #ff4d4f;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  text-align: center;
+}
