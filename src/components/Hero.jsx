@@ -88,7 +88,12 @@ export default function HeroSlider() {
   const slide = slides[current];
 
   return (
-    <section className="hero">
+    <section
+      className="hero"
+      aria-label="Marketing Scapers — AI-Powered Digital Marketing Agency USA"
+      itemScope
+      itemType="https://schema.org/WPHeader"
+    >
       <div className="hero-noise" />
       <div className="hero-grid" />
 
@@ -110,6 +115,7 @@ export default function HeroSlider() {
             ref={headingRef}
             className={`hero-heading sr sr-up ${headingVisible ? "sr-show" : ""}`}
             style={{ transitionDelay: "100ms" }}
+            itemProp="headline"
           >
             <span className="h-line h-line-1">
               <span className="w-green">Landscaping</span>{" "}
@@ -127,6 +133,7 @@ export default function HeroSlider() {
             ref={bodyRef}
             className={`hero-body sr sr-up ${bodyVisible ? "sr-show" : ""}`}
             style={{ transitionDelay: "200ms" }}
+            itemProp="description"
           >
             From AI healthcare solutions to real estate automation,
             digital marketing to clinical research—we bring innovative
