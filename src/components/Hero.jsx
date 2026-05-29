@@ -112,7 +112,7 @@ export default function HeroSlider() {
             style={{ transitionDelay: "100ms" }}
           >
             <span className="h-line h-line-1">
-              <span className="w-green">Landscaping for </span>{" "}
+              <span className="w-green">Landscaping</span>{" "}
               <span className="w-black">Your</span>
             </span>
 
