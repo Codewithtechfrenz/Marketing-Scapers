@@ -1,0 +1,113 @@
+/* ═══════════════════════════════════════════
+   SCROLL TO TOP BUTTON
+═══════════════════════════════════════════ */
+.stt-btn {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: 9990;
+
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  background: #1a1a2e;
+  color: #fff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* hidden by default */
+  opacity: 0;
+  transform: translateY(20px) scale(0.85);
+  pointer-events: none;
+  transition:
+    opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.25),
+    0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+/* visible state */
+.stt-btn--visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.stt-btn:hover {
+  background: #22c55e;
+  box-shadow:
+    0 8px 28px rgba(34, 197, 94, 0.45),
+    0 2px 8px rgba(34, 197, 94, 0.25);
+  transform: translateY(-4px) scale(1.06);
+}
+
+.stt-btn:active {
+  transform: translateY(-1px) scale(0.97);
+}
+
+/* SVG progress ring — fills the button */
+.stt-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Arrow icon — centered on top of ring */
+.stt-arrow {
+  position: relative;
+  z-index: 1;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  transition: transform 0.25s ease;
+}
+.stt-btn:hover .stt-arrow {
+  transform: translateY(-2px);
+}
+
+/* ── Tablet (768px) ── */
+@media (max-width: 768px) {
+  .stt-btn {
+    bottom: 96px;   /* above mobile bottom nav */
+    right: 16px;
+    width: 46px;
+    height: 46px;
+  }
+  .stt-arrow {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* ── Small mobile (480px) ── */
+@media (max-width: 480px) {
+  .stt-btn {
+    bottom: 90px;
+    right: 14px;
+    width: 42px;
+    height: 42px;
+  }
+  .stt-arrow {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* ── Very small (360px) ── */
+@media (max-width: 360px) {
+  .stt-btn {
+    bottom: 86px;
+    right: 12px;
+    width: 40px;
+    height: 40px;
+  }
+}

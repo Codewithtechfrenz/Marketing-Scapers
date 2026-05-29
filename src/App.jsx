@@ -10,11 +10,11 @@ import Partners from "./components/Partners";
 import FAQ from "./components/FAQ";
 import Contact from "./pages/Contact";
 import Footer from "./components/Footer";
-
+import ScrollToTop from "./components/ScrollToTop";
 
 import Demo from "./pages/Demo";
 import ServiceDetails from "./pages/ServiceDetails";
-import AboutDetail from "./pages/AboutDetail"; // ✅ ADD THIS
+import AboutDetail from "./pages/AboutDetail";
 import OurClientsPage from "./pages/OurClientsPage";
 /* =========================
    SCROLL TO HASH FIX
@@ -94,6 +94,7 @@ export default function App() {
     <BrowserRouter>
       <ScrollToHash />
       <Navbar />
+      <ScrollToTop />
 
       <Routes>
         {/* HOME */}

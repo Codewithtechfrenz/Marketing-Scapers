@@ -232,7 +232,7 @@ const services = [
     tagline: "AI-powered tool empowering real estate salesmen to close deals faster.",
     accentColor: ACCENT,
     accentLight: ACCENT_LIGHT,
-    points: ["Automated lead qualification", "Smart property matching", "Client communication automation", "Market trend analysis"],
+    points: ["AI-driven buyer & seller lead scoring", "Instant property recommendations via chat", "Automated follow-up & nurture sequences", "Real-time market insights & pricing trends"],
     details: {
       description: "Lisa is an intelligent real estate assistant that helps agents qualify leads faster, match buyers to the right properties, and automate follow-up communications — so they can focus on closing, not chasing.",
       highlights: [

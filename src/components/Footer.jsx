@@ -23,13 +23,13 @@ export default function Footer() {
             <div className="email-row">
               <span className="icon">✉</span>
               <a href="mailto:info@marketingscapers.com">
-                info@marketingscapers.com
+                john@marketingscapers.com
               </a>
             </div>
           </div>
 
           {/* SOLUTIONS */}
-          <div>
+          {/* <div>
             <h4>Solutions</h4>
             <ul>
               <li>AI Healthcare</li>
@@ -37,7 +37,7 @@ export default function Footer() {
               <li>Digital Marketing</li>
               <li>Medical Credentialing</li>
             </ul>
-          </div>
+          </div> */}
 
           {/* COMPANY */}
           <div>

@@ -37,12 +37,12 @@ const contactInfo = [
   {
     icon: <EmailIcon />,
     title: "Email",
-    detail: "hello@example.com",
+    detail: "john@marketingscapers.com",
   },
   {
     icon: <PhoneIcon />,
     title: "Phone",
-    detail: "+91 98765 43210",
+    detail: "+1 718-219-5814",
   },
 ];
 

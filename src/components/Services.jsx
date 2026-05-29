@@ -187,7 +187,7 @@ const data = [
     img: realestates,
     icon: <icons.Home />,
     tagline: "AI-powered tool empowering real estate salesmen to close deals faster.",
-    points: ["Automated lead qualification", "Smart property matching", "Client communication automation", "Market trend analysis"],
+    points: ["AI-driven buyer & seller lead scoring", "Instant property recommendations via chat", "Automated follow-up & nurture sequences", "Real-time market insights & pricing trends"],
     detail: {
       overview:
         "We craft pixel-perfect, performance-first websites tailored to your brand. From landing pages to full-scale e-commerce stores, every site is built with clean code, accessibility in mind, and scalability baked in.",
@@ -646,6 +646,15 @@ const data = [
 
 export default function Services() {
   const [activeCard, setActiveCard] = useState(null);
+  const [modalSlug, setModalSlug]   = useState(null);
+
+  const modalData = data.find((d) => d.slug === modalSlug) || null;
+
+  // lock body scroll when modal open
+  useEffect(() => {
+    document.body.style.overflow = modalSlug ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [modalSlug]);
 
   useEffect(() => {
     const cards = document.querySelectorAll(".svc-card");
@@ -696,8 +705,6 @@ export default function Services() {
       >
         {/* ── HERO HEADER ── */}
         <div className="services-header">
-          {/* <h1 className="our-clients-title">Our Client</h1> */}
-          {/* <span className="services-eyebrow">What We Do</span> */}
           <h1 className="services-title">
             Comprehensive AI & Marketing Solutions
           </h1>
@@ -716,7 +723,6 @@ export default function Services() {
                 className={`svc-card ${isOpen ? "svc-card--open" : ""}`}
                 role="listitem"
                 aria-expanded={isOpen}
-                onClick={() => toggleCard(item.slug)}
                 itemScope
                 itemType="https://schema.org/Service"
               >
@@ -753,51 +759,13 @@ export default function Services() {
                     ))}
                   </ul>
 
-                  {/* ── EXPANDED DETAIL PANEL ── */}
-                  <div
-                    className="svc-detail"
-                    aria-hidden={!isOpen}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <div className="svc-detail-inner">
-                      <p className="svc-overview">{item.detail.overview}</p>
-
-                      {/* Stats row */}
-                      <div className="svc-stats" role="list">
-                        {item.detail.stats.map((s, i) => (
-                          <div key={i} className="svc-stat" role="listitem">
-                            <span className="svc-stat-value">{s.value}</span>
-                            <span className="svc-stat-label">{s.label}</span>
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* Extras */}
-                      <ul className="svc-extras" aria-label="Additional features">
-                        {item.detail.extras.map((e, i) => (
-                          <li key={i} className="svc-extra-item">
-                            <span aria-hidden="true">◈</span> {e}
-                          </li>
-                        ))}
-                      </ul>
-
-                      <Link
-                        to={`/services/${item.slug}`}
-                        className="svc-learn-btn"
-                        aria-label={`Learn more about ${item.title}`}
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        Learn More <span aria-hidden="true">→</span>
-                      </Link>
-                    </div>
-                  </div>
-
-                  {/* Collapse hint */}
+                  {/* View details button — opens popup */}
                   <button
                     className="svc-toggle-btn"
-                    aria-label={isOpen ? "Show less" : "Show details"}
+                    aria-label={`View details for ${item.title}`}
+                    onClick={(e) => { e.stopPropagation(); setModalSlug(item.slug); }}
                   >
-                    {isOpen ? "▲ Show less" : "▼ View details"}
+                    ▼ View details
                   </button>
                 </div>
               </article>
@@ -805,6 +773,105 @@ export default function Services() {
           })}
         </div>
       </section>
+
+      {/* ── MODAL POPUP ── */}
+      {modalData && (
+        <div
+          className="svc-modal-backdrop"
+          onClick={() => setModalSlug(null)}
+          role="dialog"
+          aria-modal="true"
+          aria-label={modalData.title}
+        >
+          <div
+            className="svc-modal-box"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close */}
+            <button
+              className="svc-modal-close"
+              onClick={() => setModalSlug(null)}
+              aria-label="Close"
+            >
+              ✕
+            </button>
+
+            {/* Hero image */}
+            <div className="svc-modal-hero">
+              <img src={modalData.img} alt={modalData.title} className="svc-modal-hero-img" />
+              <div className="svc-modal-hero-veil" />
+              <div className="svc-modal-hero-info">
+                <span className="svc-modal-hero-icon">{modalData.icon}</span>
+                <div>
+                  <h2 className="svc-modal-title">{modalData.title}</h2>
+                  <p className="svc-modal-tagline">{modalData.tagline}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Scrollable content */}
+            <div className="svc-modal-content">
+
+              {/* Feature points */}
+              <div className="svc-modal-section">
+                <span className="svc-modal-eyebrow">Key Features</span>
+                <ul className="svc-modal-points">
+                  {modalData.points.map((p, i) => (
+                    <li key={i} className="svc-modal-point-item">
+                      <span className="svc-modal-check">✦</span> {p}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Overview */}
+              <div className="svc-modal-section">
+                <span className="svc-modal-eyebrow">Overview</span>
+                <p className="svc-modal-desc">{modalData.detail.overview}</p>
+              </div>
+
+              {/* Stats */}
+              <div className="svc-modal-stats">
+                {modalData.detail.stats.map((s, i) => (
+                  <div key={i} className="svc-modal-stat">
+                    <span className="svc-modal-stat-value">{s.value}</span>
+                    <span className="svc-modal-stat-label">{s.label}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Extras */}
+              <div className="svc-modal-section">
+                <span className="svc-modal-eyebrow">What's Included</span>
+                <ul className="svc-modal-extras">
+                  {modalData.detail.extras.map((e, i) => (
+                    <li key={i} className="svc-modal-extra-item">
+                      <span>◈</span> {e}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* CTA */}
+              <div className="svc-modal-cta">
+                <Link
+                  to={`/services/${modalData.slug}`}
+                  className="svc-modal-cta-btn"
+                  onClick={() => setModalSlug(null)}
+                >
+                  Learn More →
+                </Link>
+                <button
+                  className="svc-modal-cta-secondary"
+                  onClick={() => setModalSlug(null)}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

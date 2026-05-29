@@ -87,74 +87,48 @@ const clientsData = [
 ];
 
 export default function OurClients() {
-  const [activeCard, setActiveCard] = useState(null);
+  const [modalSlug, setModalSlug] = useState(null);
+  const modalData = clientsData.find((c) => c.slug === modalSlug) || null;
+
+  // lock body scroll when modal open
+  useEffect(() => {
+    document.body.style.overflow = modalSlug ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [modalSlug]);
 
   useEffect(() => {
     const cards = document.querySelectorAll(".client-card");
-
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          const card = entry.target;
-
-          if (card.classList.contains("client-card--open")) {
-            card.classList.add("show");
-            return;
-          }
-
-          if (entry.isIntersecting) {
-            card.classList.add("show");
-          } else {
-            card.classList.remove("show");
-          }
+          if (entry.isIntersecting) entry.target.classList.add("show");
+          else entry.target.classList.remove("show");
         });
       },
-      { threshold: 0.25 }
+      { threshold: 0.2 }
     );
-
-    cards.forEach((card) => {
-      observer.observe(card);
-      if (card.classList.contains("client-card--open")) {
-        card.classList.add("show");
-      }
-    });
-
+    cards.forEach((card) => observer.observe(card));
     return () => observer.disconnect();
-  }, [activeCard]);
-
-  const toggleCard = (slug) => {
-    setActiveCard((prev) => (prev === slug ? null : slug));
-  };
+  }, []);
 
   return (
-    <section
-      className="clients-section"
-      id="our-clients"
-      aria-label="Our Clients"
-    >
-      {/* ── HEADER ── */}
-      <div className="clients-header">
-        {/* <span className="clients-eyebrow">Who We Serve</span>
-        <h1 className="clients-title">
-           Our{" "}
-          <span className="clients-title-accent">Clients</span>
-        </h1> */}
-        <p className="clients-subtitle">
-          From healthcare providers to real estate firms and digital agencies — here's how we've helped our clients achieve extraordinary results.
-        </p>
-      </div>
+    <>
+      <section className="clients-section" id="our-clients" aria-label="Our Clients">
 
-      {/* ── CARDS GRID ── */}
-      <div className="clients-grid" role="list">
-        {clientsData.map((client) => {
-          const isOpen = activeCard === client.slug;
-          return (
+        {/* ── HEADER ── */}
+        <div className="clients-header">
+          <p className="clients-subtitle">
+            From healthcare providers to real estate firms and digital agencies — here's how we've helped our clients achieve extraordinary results.
+          </p>
+        </div>
+
+        {/* ── CARDS GRID ── */}
+        <div className="clients-grid" role="list">
+          {clientsData.map((client) => (
             <article
               key={client.slug}
-              className={`client-card ${isOpen ? "client-card--open" : ""}`}
+              className="client-card"
               role="listitem"
-              aria-expanded={isOpen}
-              onClick={() => toggleCard(client.slug)}
               itemScope
               itemType="https://schema.org/Organization"
             >
@@ -167,20 +141,13 @@ export default function OurClients() {
                   loading="lazy"
                   itemProp="image"
                 />
-                <span className="client-industry-badge">{client.industry}</span>
-                <span className="client-icon" aria-hidden="true">
-                  {client.icon}
-                </span>
+                <span className="client-icon" aria-hidden="true">{client.icon}</span>
               </div>
 
               {/* Body */}
               <div className="client-body">
-                <h2 className="client-name" itemProp="name">
-                  {client.name}
-                </h2>
-                <p className="client-tagline" itemProp="description">
-                  {client.tagline}
-                </p>
+                <h2 className="client-name" itemProp="name">{client.name}</h2>
+                <p className="client-tagline" itemProp="description">{client.tagline}</p>
 
                 <ul className="client-highlights" aria-label={`${client.name} highlights`}>
                   {client.highlights.map((h, i) => (
@@ -191,57 +158,107 @@ export default function OurClients() {
                   ))}
                 </ul>
 
-                {/* ── EXPANDED DETAIL PANEL ── */}
-                <div
-                  className="client-detail"
-                  aria-hidden={!isOpen}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <div className="client-detail-inner">
-                    <p className="client-overview">{client.detail.overview}</p>
-
-                    {/* Stats */}
-                    <div className="client-stats" role="list">
-                      {client.detail.stats.map((s, i) => (
-                        <div key={i} className="client-stat" role="listitem">
-                          <span className="client-stat-value">{s.value}</span>
-                          <span className="client-stat-label">{s.label}</span>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Achievements */}
-                    <ul className="client-achievements" aria-label="Key achievements">
-                      {client.detail.achievements.map((a, i) => (
-                        <li key={i} className="client-achievement-item">
-                          <span aria-hidden="true">◈</span> {a}
-                        </li>
-                      ))}
-                    </ul>
-
-                    <Link
-                      to={`/clients/${client.slug}`}
-                      className="client-case-btn"
-                      aria-label={`View case study for ${client.name}`}
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      View Case Study <span aria-hidden="true">→</span>
-                    </Link>
-                  </div>
-                </div>
-
-                {/* Toggle hint */}
+                {/* View details — opens popup */}
                 <button
                   className="client-toggle-btn"
-                  aria-label={isOpen ? "Show less" : "Show details"}
+                  onClick={() => setModalSlug(client.slug)}
+                  aria-label={`View details for ${client.name}`}
                 >
-                  {isOpen ? "▲ Show less" : "▼ View details"}
+                  ▼ View details
                 </button>
               </div>
             </article>
-          );
-        })}
-      </div>
-    </section>
+          ))}
+        </div>
+      </section>
+
+      {/* ── MODAL POPUP ── */}
+      {modalData && (
+        <div
+          className="client-modal-backdrop"
+          onClick={() => setModalSlug(null)}
+          role="dialog"
+          aria-modal="true"
+          aria-label={modalData.name}
+        >
+          <div className="client-modal-box" onClick={(e) => e.stopPropagation()}>
+
+            {/* Close */}
+            <button
+              className="client-modal-close"
+              onClick={() => setModalSlug(null)}
+              aria-label="Close"
+            >✕</button>
+
+            {/* Hero image */}
+            <div className="client-modal-hero">
+              <img src={modalData.img} alt={modalData.name} className="client-modal-hero-img" />
+              <div className="client-modal-hero-veil" />
+              <div className="client-modal-hero-info">
+                <span className="client-modal-hero-icon">{modalData.icon}</span>
+                <div>
+                  <h2 className="client-modal-name">{modalData.name}</h2>
+                  <p className="client-modal-tagline">{modalData.tagline}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Scrollable content */}
+            <div className="client-modal-content">
+
+              {/* Highlights */}
+              <div className="client-modal-section">
+                <span className="client-modal-eyebrow">Key Highlights</span>
+                <ul className="client-modal-highlights">
+                  {modalData.highlights.map((h, i) => (
+                    <li key={i} className="client-modal-highlight-item">
+                      <span className="client-modal-check">✦</span> {h}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Overview */}
+              <div className="client-modal-section">
+                <span className="client-modal-eyebrow">Overview</span>
+                <p className="client-modal-overview">{modalData.detail.overview}</p>
+              </div>
+
+              {/* Stats */}
+              <div className="client-modal-stats">
+                {modalData.detail.stats.map((s, i) => (
+                  <div key={i} className="client-modal-stat">
+                    <span className="client-modal-stat-value">{s.value}</span>
+                    <span className="client-modal-stat-label">{s.label}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Achievements */}
+              <div className="client-modal-section">
+                <span className="client-modal-eyebrow">Key Achievements</span>
+                <ul className="client-modal-achievements">
+                  {modalData.detail.achievements.map((a, i) => (
+                    <li key={i} className="client-modal-achievement-item">
+                      <span>◈</span> {a}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* CTA */}
+              <div className="client-modal-cta">
+                <button
+                  className="client-modal-cta-secondary"
+                  onClick={() => setModalSlug(null)}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
